@@ -284,22 +284,6 @@ const App: React.FC = () => {
 
   return (
     <main className="relative w-full h-screen bg-black overflow-hidden font-sans">
-    {/* DEBUG PILL */}
-    <div
-      style={{
-        position: "fixed",
-        left: 12,
-        bottom: 12,
-        zIndex: 999999,
-        padding: "6px 10px",
-        borderRadius: 999,
-        background: "rgba(0,0,0,0.6)",
-        color: "white",
-        fontSize: 12,
-        fontFamily: "monospace",
-      }}
-    >
-      Mounted ✅ {new Date().toISOString()}
     </div>
       {/* 3D Background Layer */}
       <div className="absolute inset-0 z-0">

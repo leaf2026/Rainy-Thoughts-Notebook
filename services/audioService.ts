@@ -19,13 +19,14 @@ const thunderPool: HTMLAudioElement[] = [];
 
 let isInitialized = false;
 
-// Assets
-const RAIN_URL = "https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg";
-const FOREST_RAIN_URL = "https://actions.google.com/sounds/v1/weather/rain_on_roof.ogg";
-const THUNDER_URL_1 = "https://actions.google.com/sounds/v1/weather/thunder_heavy.ogg"; // Deep
-const THUNDER_URL_2 = "https://actions.google.com/sounds/v1/weather/thunder_claps.ogg"; // Crack
-const WIND_URL = "https://actions.google.com/sounds/v1/weather/outdoor_rain.ogg"; 
-const MUSIC_URL = "https://cdn.pixabay.com/audio/2022/03/09/audio_c8c8a73467.mp3"; 
+// Assets (local, served from /public)
+const RAIN_URL = "/sounds/rain.mp3";
+const FOREST_RAIN_URL = "/sounds/forestrain.mp3";
+const THUNDER_URL_1 = "/sounds/thunder.mp3";
+const THUNDER_URL_2 = "/sounds/thunder2.mp3";
+const WIND_URL = "/sounds/wind.mp3";
+const MUSIC_URL = "/sounds/campfire.mp3";
+
 
 export const initAudio = () => {
   if (isInitialized) return;

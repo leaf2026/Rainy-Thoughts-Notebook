@@ -85,6 +85,7 @@ const App: React.FC = () => {
     audioVolume: 1.0,
     isAudioPlaying: true, 
   });
+  const lastSceneAtRef = useRef(0);
 
   const [aiPrompt, setAiPrompt] = useState<string | null>(null);
   const [showEditor, setShowEditor] = useState(true);
@@ -223,9 +224,15 @@ const App: React.FC = () => {
   };
 
   // Scene Generation Logic
-  const generateNewScene = useCallback(async () => {
-      if (isSceneLoading) return;
-      setIsSceneLoading(true);
+const generateNewScene = useCallback(async () => {
+  if (isSceneLoading) return;
+
+  const now = Date.now();
+  if (now - lastSceneAtRef.current < 5 * 60 * 1000) return;
+  lastSceneAtRef.current = now;
+
+  setIsSceneLoading(true);
+
       const bgUrl = await generateStudyBackground();
       if (bgUrl) {
           updateSettings({ backgroundUrl: bgUrl });
@@ -237,9 +244,6 @@ const App: React.FC = () => {
   useEffect(() => {
       let interval: ReturnType<typeof setInterval>;
       if (isAutoScene) {
-          // Generate immediately on enable
-          generateNewScene();
-          
           interval = setInterval(() => {
               generateNewScene();
           }, 120000); // 120 seconds (2 minutes)

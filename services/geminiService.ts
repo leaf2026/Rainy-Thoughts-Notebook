@@ -1,6 +1,10 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Vite exposes env vars via import.meta.env
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+// Only create the client if the key exists
+const ai = API_KEY ? new GoogleGenAI({ apiKey: API_KEY }) : null;
 
 const SCENE_PROMPTS = [
   "A view from inside a modern glass cabin deep in a lush, green Norwegian forest. Rain is streaking heavily against the floor-to-ceiling window. Outside is a sea of pine trees and ferns in mist. Inside is cozy, wood-paneled, and warm. Cinematic, photorealistic, 8k, moody.",
@@ -11,6 +15,10 @@ const SCENE_PROMPTS = [
 ];
 
 export const generateWritingPrompt = async (): Promise<string> => {
+    if (!ai) {
+    // App should NOT crash if AI is not configured
+    return "Soft rain drifts through quiet thoughts.";
+  }
   try {
     const model = 'gemini-3-flash-preview';
     const systemInstruction = `You are a gentle, poetic muse. Your task is to write a single, short, sweet, beautifully written one-sentence poem.

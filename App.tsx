@@ -138,10 +138,7 @@ const App: React.FC = () => {
       x: (window.innerWidth - cardWidth) / 2, 
       y: (window.innerHeight - cardHeight) / 2, 
       zIndex: 1,
-      // Only show welcome text if no saved content exists
-     text: hasSavedMain === null ? "Welcome to your quiet space.\n\nThe rain falls outside, but here you are safe.\nTake a deep breath.\n\nWhat is on your mind today?" : hasSavedMain
-    }];
-  });
+      
   const [topZ, setTopZ] = useState(1);
 
   const updateSettings = (newSettings: Partial<AppSettings>) => {

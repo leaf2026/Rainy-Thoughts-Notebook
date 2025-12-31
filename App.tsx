@@ -101,15 +101,31 @@ const App: React.FC = () => {
   
   // Manage multiple s
   // Lazy init ensures window dimensions are captured accurately on mount for centering
-  const [notes, setNotes] = useState<NoteData[]>(() => {
+ const [notes, setNotes] = useState<NoteData[]>(() => {
+  // If we already saved the whole notes array, use it
   const saved = localStorage.getItem("rainy_notes");
-  return saved ? JSON.parse(saved) : [
-    { id: "main", x: 80, y: 120, text: "Welcome to your quiet space.\n\nThe rain falls outside, but here you are safe.\n\nTake a deep breath.\n\nWhat is on your mind today?" , zIndex: 1 }
+  if (saved) return JSON.parse(saved);
+
+  // Otherwise, load the main note text if it exists (so it stays the same on refresh)
+  const savedMain = localStorage.getItem("rainy-thoughts-content");
+  const defaultText =
+    "Welcome to your quiet space.\n\nThe rain falls outside, but here you are safe.\nTake a deep breath.\n\nWhat is on your mind today?";
+
+  // Centering logic (so it looks good on different screens)
+  const isMobile = window.innerWidth < 768;
+  const cardWidth = isMobile ? Math.min(450, window.innerWidth * 0.9) : 450;
+  const cardHeight = isMobile ? Math.min(500, window.innerHeight * 0.6) : 500;
+
+  return [
+    {
+      id: "main",
+      x: (window.innerWidth - cardWidth) / 2,
+      y: (window.innerHeight - cardHeight) / 2,
+      text: savedMain ?? defaultText,
+      zIndex: 1,
+    },
   ];
 });
-    // Check if main note exists in storage to avoid overwriting user data
-    const hasSavedMain = localStorage.getItem('rainy-thoughts-content');
-    
     // Responsive logic for initial placement
     const isMobile = window.innerWidth < 768;
     // Use 90% width on mobile to match Editor component logic

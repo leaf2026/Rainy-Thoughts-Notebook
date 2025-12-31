@@ -101,17 +101,15 @@ const App: React.FC = () => {
   
   // Manage multiple s
   // Lazy init ensures window dimensions are captured accurately on mount for centering
- const [notes, setNotes] = useState<NoteData[]>(() => {
-  // If we already saved the whole notes array, use it
+const DEFAULT_MAIN_TEXT =
+  "Welcome to your quiet space.\n\nThe rain falls outside, but here you are safe.\nTake a deep breath.\n\nWhat is on your mind today?";
+
+const [notes, setNotes] = useState<NoteData[]>(() => {
   const saved = localStorage.getItem("rainy_notes");
   if (saved) return JSON.parse(saved);
 
-  // Otherwise, load the main note text if it exists (so it stays the same on refresh)
   const savedMain = localStorage.getItem("rainy-thoughts-content");
-  const defaultText =
-    "Welcome to your quiet space.\n\nThe rain falls outside, but here you are safe.\nTake a deep breath.\n\nWhat is on your mind today?";
 
-  // Centering logic (so it looks good on different screens)
   const isMobile = window.innerWidth < 768;
   const cardWidth = isMobile ? Math.min(450, window.innerWidth * 0.9) : 450;
   const cardHeight = isMobile ? Math.min(500, window.innerHeight * 0.6) : 500;
@@ -121,28 +119,12 @@ const App: React.FC = () => {
       id: "main",
       x: (window.innerWidth - cardWidth) / 2,
       y: (window.innerHeight - cardHeight) / 2,
-      text: savedMain ?? defaultText,
       zIndex: 1,
+      text: savedMain ?? DEFAULT_MAIN_TEXT,
     },
   ];
 });
-    // Responsive logic for initial placement
-    const isMobile = window.innerWidth < 768;
-    // Use 90% width on mobile to match Editor component logic
-    const cardWidth = isMobile ? Math.min(450, window.innerWidth * 0.9) : 450;
-    const cardHeight = isMobile ? Math.min(500, window.innerHeight * 0.6) : 500;
-    
-return [
-  {
-    id: 'main',
-    // Centering logic
-    x: (window.innerWidth - cardWidth) / 2,
-    y: (window.innerHeight - cardHeight) / 2,
-    zIndex: 1,
-    text: savedMain ?? defaultText,
-  },
-];
-});
+
   const [topZ, setTopZ] = useState(1);
 
   const updateSettings = (newSettings: Partial<AppSettings>) => {

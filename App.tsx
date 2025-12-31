@@ -132,13 +132,17 @@ const App: React.FC = () => {
     const cardWidth = isMobile ? Math.min(450, window.innerWidth * 0.9) : 450;
     const cardHeight = isMobile ? Math.min(500, window.innerHeight * 0.6) : 500;
     
-    return [{ 
-      id: 'main', 
-      // Centering logic
-      x: (window.innerWidth - cardWidth) / 2, 
-      y: (window.innerHeight - cardHeight) / 2, 
-      zIndex: 1,
-      
+return [
+  {
+    id: 'main',
+    // Centering logic
+    x: (window.innerWidth - cardWidth) / 2,
+    y: (window.innerHeight - cardHeight) / 2,
+    zIndex: 1,
+    text: savedMain ?? defaultText,
+  },
+];
+});
   const [topZ, setTopZ] = useState(1);
 
   const updateSettings = (newSettings: Partial<AppSettings>) => {

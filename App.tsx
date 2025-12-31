@@ -86,7 +86,7 @@ const App: React.FC = () => {
     isAudioPlaying: true, 
   });
   const lastSceneAtRef = useRef(0);
-
+  const lastGenTimeRef = useRef(0);
   const [aiPrompt, setAiPrompt] = useState<string | null>(null);
   const [showEditor, setShowEditor] = useState(true);
   
@@ -229,11 +229,12 @@ const [notes, setNotes] = useState<NoteData[]>(() => {
 
   // Scene Generation Logic
 const generateNewScene = useCallback(async () => {
-  if (isSceneLoading) return;
-
+  // Cooldown: prevent too many Gemini calls (429)
   const now = Date.now();
-  if (now - lastSceneAtRef.current < 5 * 60 * 1000) return;
-  lastSceneAtRef.current = now;
+  const COOLDOWN_MS = 30_000; // 30 seconds
+  if (now - lastGenTimeRef.current < COOLDOWN_MS) return;
+  lastGenTimeRef.current = now;
+  if (isSceneLoading) return;
 
   setIsSceneLoading(true);
 
@@ -250,7 +251,7 @@ const generateNewScene = useCallback(async () => {
       if (isAutoScene) {
           interval = setInterval(() => {
               generateNewScene();
-          }, 120000); // 120 seconds (2 minutes)
+          }, 1200000); // 1200 seconds (20 minutes)
       }
       return () => clearInterval(interval);
   }, [isAutoScene]); 
@@ -344,7 +345,11 @@ const generateNewScene = useCallback(async () => {
       <div className="fixed top-6 left-6 z-50 flex items-center gap-4">
         {/* Auto-Scene Button */}
         <button 
-          onClick={() => setIsAutoScene(!isAutoScene)}
+       onClick={() => {
+  console.log("Generate background clicked");
+  generateNewScene();          // immediate AI call
+  setIsAutoScene(true);        // optional: keep auto mode on
+}}
           className={`
             p-3 rounded-full 
             transition-all duration-300 ease-out group

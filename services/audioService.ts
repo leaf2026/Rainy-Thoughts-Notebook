@@ -11,6 +11,8 @@ let rainAudio: HTMLAudioElement | null = null;
 let forestAudio: HTMLAudioElement | null = null;
 let windAudio: HTMLAudioElement | null = null;
 let musicAudio: HTMLAudioElement | null = null;
+let thunder1Audio: HTMLAudioElement | null = null;
+let thunder2Audio: HTMLAudioElement | null = null;
 
 // Event Pool (Thunder)
 // We keep a pool of audio objects to allow overlapping thunder if necessary
@@ -48,6 +50,14 @@ export const initAudio = () => {
   musicAudio.loop = true;
   musicAudio.crossOrigin = "anonymous";
 
+  thunder1Audio = new Audio(THUNDER_URL_1);
+  thunder1Audio.loop = true;
+  thunder1Audio.crossOrigin = "anonymous";
+
+  thunder2Audio = new Audio(THUNDER_URL_2);
+  thunder2Audio.loop = true;
+  thunder2Audio.crossOrigin = "anonymous";
+  
   // 2. Initialize Thunder Pool (One-Shots)
   // Alternating sources for variety
   for (let i = 0; i < THUNDER_POOL_SIZE; i++) {

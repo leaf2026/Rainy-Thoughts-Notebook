@@ -99,9 +99,14 @@ const App: React.FC = () => {
   const lightningTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lightningLoopRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
-  // Manage multiple notes
+  // Manage multiple s
   // Lazy init ensures window dimensions are captured accurately on mount for centering
   const [notes, setNotes] = useState<NoteData[]>(() => {
+  const saved = localStorage.getItem("rainy_notes");
+  return saved ? JSON.parse(saved) : [
+    { id: "main", x: 80, y: 120, text: "Welcome to your quiet space.\n\nThe rain falls outside, but here you are safe.\n\nTake a deep breath.\n\nWhat is on your mind today?" , zIndex: 1 }
+  ];
+});
     // Check if main note exists in storage to avoid overwriting user data
     const hasSavedMain = localStorage.getItem('rainy-thoughts-content');
     

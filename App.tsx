@@ -120,7 +120,7 @@ const [notes, setNotes] = useState<NoteData[]>(() => {
       x: (window.innerWidth - cardWidth) / 2,
       y: (window.innerHeight - cardHeight) / 2,
       zIndex: 1,
-      text: savedMain ?? DEFAULT_MAIN_TEXT,
+      text: savedMain && savedMain.trim().length > 0 ? savedMain : DEFAULT_MAIN_TEXT,
     },
   ];
 });
